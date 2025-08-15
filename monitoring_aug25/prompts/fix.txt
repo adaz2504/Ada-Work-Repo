@@ -1,0 +1,2 @@
+1. purchase APR all above 30% in dm_consolidated.int_clip_current_assumptions table
+2. swap in segment does not work - maybe remove the filter

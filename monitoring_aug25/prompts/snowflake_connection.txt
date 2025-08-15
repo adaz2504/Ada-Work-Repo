@@ -1,0 +1,6 @@
+We are going to work with Snowflake in this project. Can you do a simple "select 1"
+We are going to work with raw SQL files. Put them in a folder "sql/"
+Add a test query in that folder to read the snowflake table EDW_DB.PUBLIC.TU_RAW_TRADELINE_TRADE 
+Put the query in sql/test_file1.sql
+
+Use python code in python/snowflake.py to run these queries

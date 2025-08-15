@@ -1,0 +1,9 @@
+Refer to phase 2 in toplevel.md and the original_sql_script.txt and develop a new script. 
+Use the dm_consolidated.int_clip_performance_secondary_statement table and dm_consolidated.int_clip_current_assumptions table as the original script
+We do not need to calculate NIAT and NACO as of now.
+Run the sql query to see if it gives any error, if yes, fix the error
+
+Put the query in sql/monitoring.sql.
+Put the sample query result in SQL Results
+
+Examine the result to check if the data make sense (i.e., most ratio should be below 1, column should not have all null values)

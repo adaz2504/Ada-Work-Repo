@@ -1,0 +1,47 @@
+MONITORING SQL DATA QUALITY REPORT
+============================================================
+
+Analysis Date: 2025-08-13
+Total Rows: 100
+Total Columns: 59
+
+ISSUES IDENTIFIED:
+--------------------
+1. IS_SWAP_IN column has all zero values
+   - This may indicate no swap-in accounts in current data subset
+   - Consider if this column is needed for analysis
+
+2. UTILIZATION has negative values (min: -0.013731)
+   - Negative utilization may indicate data quality issues
+   - Could be due to credits/payments exceeding balances
+   - Recommend investigating source data
+
+3. DQ30_RATE shows all zeros
+   - May indicate no 30-day delinquencies in sample
+   - Or calculation issue in DQ30 logic
+
+4. Assumption columns have 4% null values
+   - Indicates some records not matching assumption table
+   - May need to review join conditions
+
+RECOMMENDATIONS:
+---------------
+1. Review IS_SWAP_IN filter - may need broader data sample
+2. Investigate negative utilization calculation
+3. Verify DQ30_RATE calculation logic
+4. Check assumption table join conditions
+5. Consider data validation rules for ratios
+
+METRICS WITHIN EXPECTED RANGES:
+-----------------------------------
+✅ PBAD: 0.000000 to 0.027778 (0% to 2.78%)
+✅ SEVERITY: 0.00 to 50.00 (reasonable charge-off amounts)
+✅ CREDIT_LINE: Max 5,000.00 (typical credit limits)
+✅ Most UTILIZATION: -1.37% to 31.16% (mostly reasonable)
+
+DATA COMPLETENESS SUMMARY:
+------------------------------
+• Core metrics: Complete (no nulls)
+• Dimensional splits: Complete
+• Assumption data: 96% complete
+• Overall data quality: Good with minor issues
