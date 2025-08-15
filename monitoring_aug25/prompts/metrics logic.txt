@@ -1,0 +1,11 @@
+Pbad per open: charged_off_statements/open_statements
+Severity: principal_balance_chargedoff_accounts/credit_limit_chargedoff_accounts
+Util: principl_balance_open_accounts/credit_limit_open_accounts
+DQ30: bkt2_accounts/open_accounts
+Credit Line: credit_limit_open_accounts/open_statements
+Cash Advance: cash_advance_takers/open_statements
+Penality: late_fees/open_statements
+Pvol: purchase_balance_open_accounts/total_balance_open_accounts
+Attrition: voluntary_closures/open_statements
+Revolve Rate: can ignore for now, need to check later
+Outstanding: average_outstanding_balance_open_accounts

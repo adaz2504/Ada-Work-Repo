@@ -52,6 +52,7 @@ pre_aggregate_metrics as (
         sum(account_open_in_secondary_statement) as open_statements,
         sum(account_charged_off_in_secondary_statement) as charged_off_statements,
         sum(account_charged_off_in_secondary_statement) * 12 as chargeoffs_pbad,
+        sum(account_open_in_secondary_statement * secondary_statement_principal_balance) as principal_balance_open_accounts,
         sum(account_open_in_secondary_statement * secondary_statement_purchase_balance) as purchase_balance_open_accounts,
         sum(account_open_in_secondary_statement * secondary_statement_total_balance) as total_balance_open_accounts,
         sum(account_open_in_secondary_statement * secondary_statement_credit_limit) as credit_limit_open_accounts,
@@ -63,8 +64,7 @@ pre_aggregate_metrics as (
         sum(secondary_statement_cash_advance_amount) as cash_advance_amount,
         sum(secondary_statement_late_fee_indicator) as late_fees,
         sum(account_open_in_secondary_statement * secondary_statement_average_outstanding_balance) as average_outstanding_balance_open_accounts,
-        sum(account_open_in_secondary_statement * secondary_statement_average_purchase_balance) as average_purchase_balance_open_accounts,
-        sum(account_open_in_secondary_statement * secondary_statement_average_credit_limit) as average_credit_limit_open_accounts
+        sum(account_open_in_secondary_statement * secondary_statement_average_purchase_balance) as average_purchase_balance_open_accounts
 
     from dimensional_mappings
     group by 
@@ -178,4 +178,4 @@ order by
     retro_risk_group,
     combined_util_group,
     statements_since_clip
-limit 100;
+limit 1000;
