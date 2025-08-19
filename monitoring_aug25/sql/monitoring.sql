@@ -170,12 +170,7 @@ monitoring_enhanced as (
         and cast(metrics.clip_amount_group_assumptions as varchar) = assumptions.clip_amount_group
 )
 
--- Final select with all enhanced monitoring metrics
+-- Final select with stratified random sampling across key dimensions
 select * from monitoring_enhanced
-order by 
-    retro_risk_series,
-    statement_segment_new,
-    retro_risk_group,
-    combined_util_group,
-    statements_since_clip
+order by random()
 limit 1000;

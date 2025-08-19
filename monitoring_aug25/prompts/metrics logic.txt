@@ -1,11 +1,61 @@
-Pbad per open: charged_off_statements/open_statements
-Severity: principal_balance_chargedoff_accounts/credit_limit_chargedoff_accounts
-Util: principl_balance_open_accounts/credit_limit_open_accounts
-DQ30: bkt2_accounts/open_accounts
-Credit Line: credit_limit_open_accounts/open_statements
-Cash Advance: cash_advance_takers/open_statements
-Penality: late_fees/open_statements
-Pvol: purchase_balance_open_accounts/total_balance_open_accounts
-Attrition: voluntary_closures/open_statements
-Revolve Rate: can ignore for now, need to check later
-Outstanding: average_outstanding_balance_open_accounts
+{
+    # Metrics where the SQL calculates the final ratio
+    'Pbad': {
+        'actual_col': 'PBAD', # Calculated in SQL
+        'assumption_col': 'PBAD_PER_OPEN',
+        'calculation': 'CHARGE_OFFS_PBAD / OPEN_STATEMENTS'
+    },
+    'Severity': {
+        'actual_col': 'SEVERITY', # Calculated in SQL
+        'assumption_col': 'SEVERITY_ASMPT',
+        'calculation': 'PRINCIPAL_BALANCE_CHARGEDOFF_ACCOUNTS / CHARGED_OFF_STATEMENTS'
+    },
+    'Utilization': {
+        'actual_col': 'UTILIZATION', # Calculated in SQL
+        'assumption_col': 'UTILIZATION_PER_OPEN',
+        'calculation': 'TOTAL_BALANCE_OPEN_ACCOUNTS / CREDIT_LIMIT_OPEN_ACCOUNTS'
+    },
+    'Credit_Line': {
+        'actual_col': 'CREDIT_LINE', # Calculated in SQL
+        'assumption_col': 'CREDIT_LINE_PER_OPEN',
+        'calculation': 'CREDIT_LIMIT_OPEN_ACCOUNTS / OPEN_STATEMENTS'
+    },
+    'Revolve_Rate': {
+        'actual_col': 'REVOLVE_AGGREGATE', # Calculated in SQL
+        'assumption_col': 'REVOLVE_RATE_ASMPT',
+        'calculation': 'PURCHASE_BALANCE_OPEN_ACCOUNTS / AVERAGE_OUTSTANDING_BALANCE_OPEN_ACCOUNTS'
+    },
+
+    # Metrics where the calculation must be defined from SQL components
+    'DQ30': {
+        'actual_col': None, # Must be calculated from components
+        'assumption_col': None, # No assumption data available in SQL
+        'calculation': 'BKT2_ACCOUNTS / OPEN_STATEMENTS',
+        'note': 'Assumption data for DQ30 is not available in the assumptions table.'
+    },
+    'Cash_Advance': {
+        'actual_col': None, # Must be calculated from components
+        'assumption_col': 'CASH_INCIDENCE_ASMPT',
+        'calculation': 'CASH_ADVANCE_TAKERS / OPEN_STATEMENTS'
+    },
+    'Penalty': {
+        'actual_col': None, # Must be calculated from components
+        'assumption_col': 'PENALTY_FEE_RATE_ASMPT',
+        'calculation': 'LATE_FEES / OPEN_STATEMENTS'
+    },
+    'Pvol': {
+        'actual_col': None, # Must be calculated from components
+        'assumption_col': 'FINAL_PURCHASE_VOLUME_PERCENTAGE',
+        'calculation': 'PURCHASE_BALANCE_OPEN_ACCOUNTS / CREDIT_LIMIT_OPEN_ACCOUNTS'
+    },
+    'Attrition': {
+        'actual_col': None, # Must be calculated from components
+        'assumption_col': 'CLOSE_OPEN_ASMPT',
+        'calculation': 'VOLUNTARY_CLOSURES / OPEN_STATEMENTS'
+    },
+    'Outstanding': {
+        'actual_col': 'OUTSTANDING_AGGREGATE', # This is an absolute value, not a ratio
+        'assumption_col': 'OUTSTANDINGS_PER_ORIGINAL_ASMPT',
+        'calculation': 'AVERAGE_OUTSTANDING_BALANCE_OPEN_ACCOUNTS'
+    }
+}

@@ -1,0 +1,31 @@
+A Step-by-Step Troubleshooting Plan
+The goal is to make the process transparent. We need to see the data at each stage to find out where things are going wrong.
+
+Step 1: See the Raw Ingredients
+
+First, we need to confirm the raw data coming from the SQL query is what we expect.
+
+Action: Modify the Python script (dq_visualizer.py). Immediately after it runs the SQL query and loads the data into the pandas DataFrame, have it save that DataFrame to a CSV file.
+
+Example Code Snippet:
+
+Python
+
+# (After loading data from SQL into a DataFrame called 'df')
+df.to_csv('raw_sql_output.csv', index=False)
+print("Saved raw SQL output to raw_sql_output.csv")
+What to Check: Open the raw_sql_output.csv file. Do the raw numbers for columns like purchase_balance_open_accounts and credit_limit_open_accounts look correct? This is a quick sanity check.
+
+Step 2: See the Final Calculated Metrics
+
+Next, we'll perform the calculations and save the results before they are turned into charts. This is the most critical step.
+
+Action: In the same Python script, after you've added the new columns for the calculated metrics (like Utilization, Severity, etc.), save the entire DataFrame again, but to a different CSV file.
+
+Example Code Snippet:
+
+Python
+
+# (After creating new columns like df['Utilization'] =...)
+df.to_csv('calculated_metrics.csv', index=False)
+print("Saved calculated metrics to calculated_metrics.csv")

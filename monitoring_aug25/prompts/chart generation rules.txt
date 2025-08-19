@@ -1,0 +1,3 @@
+We want to generate one png file for the 10 metrics in metric logic.txt
+Each png file has two charts: for actuals and for models/assumptions 
+Only exception is DQ30, which only hasy actual
