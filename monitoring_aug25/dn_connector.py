@@ -3,12 +3,43 @@
 # --- Core Imports ---
 import os
 import logging
-from typing import Union  # <-- ADDED for type hinting
+from typing import Union
 
 # --- Library Imports ---
 import snowflake.connector
 import pandas as pd
-import polars as pl
+
+# --- DEPENDENCY MANAGEMENT ---
+# To avoid SSL/certificate errors with large datasets, ensure your Snowflake connector is up-to-date.
+# In your terminal, run:
+# pip install --upgrade snowflake-connector-python
+
+# Automatic version check for the Snowflake connector
+try:
+    from packaging import version
+    import importlib.metadata
+    
+    # Define the minimum recommended version to avoid common bugs
+    RECOMMENDED_SNOWFLAKE_VERSION = "3.0.0"
+    
+    installed_version_str = importlib.metadata.version("snowflake-connector-python")
+    installed_v = version.parse(installed_version_str)
+    recommended_v = version.parse(RECOMMENDED_SNOWFLAKE_VERSION)
+    
+    if installed_v < recommended_v:
+        logging.warning(
+            f"⚠️ Your snowflake-connector-python version ({installed_v}) is outdated. "
+            f"Please upgrade to {recommended_v} or later to prevent potential errors."
+        )
+        logging.warning("➡️ Run: pip install --upgrade snowflake-connector-python")
+    else:
+        logging.info(f"✅ Snowflake connector version {installed_v} is current.")
+
+except ImportError:
+    logging.warning("⚠️ Could not perform Snowflake connector version check. Consider installing 'packaging': pip install packaging")
+except importlib.metadata.PackageNotFoundError:
+    logging.error("❌ 'snowflake-connector-python' is not installed. Please install it first.")
+
 
 # --- Basic Logging Configuration ---
 # This ensures that logging messages will be displayed in your terminal.
@@ -57,7 +88,7 @@ def is_connection_active(conn):
         cursor.fetchone()
         cursor.close()
         return True
-    except Exception: # <-- IMPROVED from bare 'except:'
+    except Exception:
         return False
 
 # --- Data Pulling Functions ---
@@ -70,7 +101,6 @@ def pull_df_pl(cursor, query_syntax: str) -> pl.DataFrame:
     try:
         cursor.execute(query_syntax)
         columns = [col[0] for col in cursor.description]
-        # fetchall() can be slow for large results, but is simple
         results = cursor.fetchall()
         df = pl.DataFrame(results, schema=columns, orient="row", infer_schema_length=100000)
         return df
@@ -82,7 +112,6 @@ def pull_df_pd(cursor, query_syntax: str) -> pd.DataFrame:
     """Pull data using cursor and return as a Pandas DataFrame."""
     try:
         cursor.execute(query_syntax)
-        # The fetch_pandas_all() method is often more efficient
         df = cursor.fetch_pandas_all()
         return df
     except Exception as e:
